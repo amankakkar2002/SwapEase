@@ -10,9 +10,10 @@ require('../db/conn');
 const User=require('../models/userSchema');
 
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const Authenticate = require("../middleware/authenticate");
 router.use(cookieParser());
-
+router.use(cors());
 router.get('/home',(req,res)=>
 {
     res.send('Hello at 3000 from auth.js');
@@ -45,6 +46,9 @@ router.get('/home',(req,res)=>
 
 router.post('/register', async(req,res)=>
 {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
     const { name, email, enrollment, sector, password, cpassword, course, branch, batch, year, esubject, dsubject}=req.body;
     if(!name|| !email|| !enrollment|| !sector|| !password || !cpassword)
     {
@@ -78,9 +82,10 @@ router.post('/register', async(req,res)=>
 
 router.post('/signin',async (req,res)=>
 {
-    // console.log(req.body);
-    // res.json({message:"Login Successful"});
-
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+  
     try
     {
         let token;
@@ -151,6 +156,10 @@ router.post('/signin',async (req,res)=>
 
 router.post('/apply', Authenticate, async(req,res)=>
 {
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     try{
     const {email, course, branch, batch, year, esubject, dsubject}=req.body;
     // const email = req.user.email;
@@ -180,6 +189,9 @@ router.post('/apply', Authenticate, async(req,res)=>
 
 
 router.post("/materials", (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
     const { subject, year, exam } = req.body;
     const fileName = subject + year + exam + ".pdf";
     const filePath = path.join(__dirname, "../files/", fileName);
